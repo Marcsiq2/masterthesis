@@ -12,20 +12,23 @@ import midi_utils
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
-OUTPUT_FILE = os.getcwd() + '/Files/extracted_midi/output.mid'
-OUTPUT_FILE_SPLITTED = os.getcwd() + '/Files/extracted_midi/output_splitted.mid'
+INPUT_FOLDER = os.getcwd() + '/Files/guitar_in/helena_song3/'
+OUTPUT_FILE = os.getcwd() + '/Files/extracted_midi/helena_song3/output.mid'
+OUTPUT_FILE_SPLITTED = os.getcwd() + '/Files/extracted_midi/helena_song3/output_splitted.mid'
 
 def main():
 
     #get imput arguments (use Tkinter to get folder, and console to arguments)
     root = Tkinter.Tk()
     root.withdraw()
-    folderName = tkFileDialog.askdirectory(parent=root,initialdir=os.getcwd() + '/Files/guitar_in/helena_song1',
-        title='Please select a directory')
+    #folderName = tkFileDialog.askdirectory(parent=root,initialdir=os.getcwd() + '/Files/guitar_in/helena_song1',
+    #    title='Please select a directory')
+    #folderName = folderName + '/'
+    folderName = INPUT_FOLDER
     if len(folderName ) <= 0:
         print "No folder selected!"
     else:
-        folderName = folderName + '/'
+        
         print "You chose %s" % folderName
         files = [fileName for fileName in os.listdir(folderName) if fileName[-3:] == "wav"]
         MyMIDI_split = MIDIFile(numTracks=len(files), adjust_origin=False)
@@ -34,7 +37,7 @@ def main():
 
         for track in range(1,7): #Get files name list from performance folder (wavs)
             fileName = 'string%i.wav' % track
-            print 'Processing: %s' % fileName
+            print '\nProcessing: %s' % fileName
             MyMIDI_split.addTempo(track-1, 0, 110)
             MyMIDI_split.addTrackName(track-1, 0, fileName[:-4])
             pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName)
