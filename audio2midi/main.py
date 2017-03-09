@@ -13,13 +13,14 @@ import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
 OUTPUT_FILE = os.getcwd() + '/Files/extracted_midi/output.mid'
+OUTPUT_FILE_SPLITTED = os.getcwd() + '/Files/extracted_midi/output_splitted.mid'
 
 def main():
 
     #get imput arguments (use Tkinter to get folder, and console to arguments)
     root = Tkinter.Tk()
     root.withdraw()
-    folderName = tkFileDialog.askdirectory(parent=root,initialdir=os.getcwd(),
+    folderName = tkFileDialog.askdirectory(parent=root,initialdir=os.getcwd() + '/Files/guitar_in/helena_song1',
         title='Please select a directory')
     if len(folderName ) <= 0:
         print "No folder selected!"
@@ -27,16 +28,26 @@ def main():
         folderName = folderName + '/'
         print "You chose %s" % folderName
         files = [fileName for fileName in os.listdir(folderName) if fileName[-3:] == "wav"]
-        MyMIDI = MIDIFile(numTracks=len(files), adjust_origin=False)
-        for track, fileName in enumerate(files): #Get files name list from performance folder (wavs)
+        MyMIDI_split = MIDIFile(numTracks=len(files), adjust_origin=False)
+        MyMIDI = MIDIFile(numTracks=1, adjust_origin=False)
+        MyMIDI.addTempo(0, 0, 110)
+
+        for track in range(1,7): #Get files name list from performance folder (wavs)
+            fileName = 'string%i.wav' % track
             print 'Processing: %s' % fileName
-            MyMIDI.addTrackName(track, 0, fileName[:-4])
+            MyMIDI_split.addTempo(track-1, 0, 110)
+            MyMIDI_split.addTrackName(track-1, 0, fileName[:-4])
             pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName)
-            midi_utils.write_midi_notes(MyMIDI, track, pitch_m, onset_b, dur_b, vel)
+            midi_utils.write_midi_notes(MyMIDI_split, track-1, pitch_m, onset_b, dur_b, vel)
+            midi_utils.write_midi_notes(MyMIDI, 0, pitch_m, onset_b, dur_b, vel)
+        #save midi files
+        binfile = open(OUTPUT_FILE_SPLITTED, 'wb')
+        MyMIDI_split.writeFile(binfile)
+        binfile.close()
+
         binfile = open(OUTPUT_FILE, 'wb')
         MyMIDI.writeFile(binfile)
         binfile.close()
-
         print "SUCCESS!!!"
 
     return
@@ -56,14 +67,21 @@ def extractionProcess(folderName, fileName):
     plot_filters = False
     unvoice_detection = False
     bpm_estimation = False
+    guitar_splitted = True
 
     # initial variables...
 
     #flag = 1
     #bpm_all = [['File Name','bpm', 'confidence']]
+    string = int(fileName[6])
+    freqs_guitar = [(320,660), (240,500), (190, 400), (140, 300), (100, 230), (80, 170)]
     minFrequency = 80  # E2 = 82.412Hz guitar lowest E
     maxFrequency = 2000  # D6 = 1175Hz guitar highest note
     bpm = 110
+
+    if guitar_splitted:
+        minFrequency, maxFrequency = freqs_guitar[string-1]
+        print '--- Processing string %s with freqs %s to %s' % (str(string), str(minFrequency), str(maxFrequency))
     #monophonic = input('Is audio monophonic?')
     monophonic = True
 
