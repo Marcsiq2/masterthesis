@@ -12,15 +12,15 @@ import midi_utils
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
-INPUT_FOLDER = os.getcwd() + '/Files/guitar_in/helena_song3/'
-OUTPUT_FILE = os.getcwd() + '/Files/extracted_midi/helena_song3/output.mid'
-OUTPUT_FILE_SPLITTED = os.getcwd() + '/Files/extracted_midi/helena_song3/output_splitted.mid'
+INPUT_FOLDER = '../Files/guitar_in/helena_song3/'
+OUTPUT_FILE = '../Files/extracted_midi/helena_song3/output.mid'
+OUTPUT_FILE_SPLITTED = '../Files/extracted_midi/helena_song3/output_splitted.mid'
 
 def main():
 
     #get imput arguments (use Tkinter to get folder, and console to arguments)
-    root = Tkinter.Tk()
-    root.withdraw()
+    #root = Tkinter.Tk()
+    #root.withdraw()
     #folderName = tkFileDialog.askdirectory(parent=root,initialdir=os.getcwd() + '/Files/guitar_in/helena_song1',
     #    title='Please select a directory')
     #folderName = folderName + '/'
