@@ -8,7 +8,7 @@
     <creator type="composer">Manuel M. Ponce</creator>
     <encoding>
       <software>MuseScore 2.0.3</software>
-      <encoding-date>2017-03-14</encoding-date>
+      <encoding-date>2017-03-30</encoding-date>
       <supports element="accidental" type="yes"/>
       <supports element="beam" type="yes"/>
       <supports element="print" attribute="new-page" type="no"/>
@@ -49,11 +49,20 @@
           <clef-octave-change>-1</clef-octave-change>
           </clef>
         </attributes>
+      <direction placement="above">
+        <direction-type>
+          <metronome parentheses="no">
+            <beat-unit>quarter</beat-unit>
+            <per-minute>90</per-minute>
+            </metronome>
+          </direction-type>
+        <sound tempo="90"/>
+        </direction>
       <harmony print-frame="no">
         <root>
-          <root-step>C</root-step>
+          <root-step>A</root-step>
           </root>
-        <kind>major</kind>
+        <kind text="m">minor</kind>
         </harmony>
       <note>
         <pitch>
