@@ -1,6 +1,6 @@
 function [nmat,nstruct]=xml2nmat(xmlFile)
 
-nstruct=xmlMusicParse(xmlFile);
+[~, nstruct, ~] =xmlMusicParse(xmlFile);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % onset    dur       chan       pitch      vol     onset      dur   %

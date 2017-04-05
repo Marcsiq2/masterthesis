@@ -87,12 +87,17 @@ chord_beat_col=chord_beat_col(1:end)';
 chord_id_beat_col=chords.id';
 chord_id_beat_col=chord_id_beat_col(1:end)';
 
+%NOT WORKING
 %index the note chord by note beat...
-score_s.chord=chord_beat_col(floor(score_s.onset_b)+1);%chord to each note(plus one as beats are zero indexed)
+%score_s.chord=chord_beat_col(floor(score_s.onset_b)+1);%chord to each note(plus one as beats are zero indexed)
 %score_s.chord=[score_s.chord{:}]';
-score_s.chord_id=chord_id_beat_col(floor(score_s.onset_b)+1);%chord idx to each note
+%score_s.chord_id=chord_id_beat_col(floor(score_s.onset_b)+1);%chord idx to each note
 
-
+%MARC FIX
+indxs = floor((score_s.onset_b/max(score_s.onset_b))*length(chord_beat_col));
+indxs(indxs==0) = 1;
+score_s.chord = chord_beat_col(indxs);
+score_s.chord_id=chord_id_beat_col(indxs);
 
 %% create chord type descriptor
 score_s.chord_type=cell(size(nmat,1),1);
@@ -121,7 +126,7 @@ score_s.note2chord=abs(score_s.pitch_mod-score_s.chord_id);
 
 %Function to get chord extensions description
 %CHECK OUT MAYOR CHORDS AS THEY HAVE NO TEXT TO REFER TO THE TYPE!!!
-[ext_id, ext_c]=chordExtensions('data_sets/chords_extensions.txt');
+[ext_id, ext_c]=chordExtensions('Files/chord_extensions.txt');
 
 %classify "Is a chord note y/n" by looking if the note2chord is in the chord description
 score_s.isChordN=cell(size(nmat,1),1);%initialize cell array

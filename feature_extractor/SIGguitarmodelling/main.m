@@ -48,21 +48,21 @@ for i=1:numberOfFiles, %for each file (do not count . and ..
 
            %% Read midi performance
            fprintf(['Converting performance wav file in to MIDI matix: ',files(i,1).name,'...']);
-           %nmat2=midi2nmat([path_file_s(1:end-5),'performed/',files(i,1).name(1:end-4),'.mid',]);%Read midi file into nmat!!! (by me!)
+           nmat2=midi2nmat([path_file_s(1:end-11),'\extracted_midi\',files(i,1).name(1:end-4),'.mid',]);%Read midi file into nmat!!! (by me!)
            
            %%%%Here wi will use the function to transcribe audio to midi by
            %Helena
-            nmat2 = create_nmat_gt([path_file_s(1:end-5),'performed/',files(i,1).name(1:end-4),'.wav'], nstruct1.tempo);
+            %nmat2 = create_nmat_gt([path_file_s(1:end-5),'performed/',files(i,1).name(1:end-4),'.wav'], nstruct1.tempo);
            
            fprintf('Done!\n');
 
            %% Read backing track file path
-           wavFile=[path_file_s(1:end-5),'performed/',files(i,1).name(1:end-4),'.wav',];
+           %wavFile=[path_file_s(1:end-5),'performed/',files(i,1).name(1:end-4),'.wav',];
 
            %% Align midi and beat track extracted from backing track audio file
-           fprintf(['Performing midi beat aligment based on beat extraction from audio backing track: \n',files(i,1).name,'...']);
-           nmat2=beatTrackMidiAlign(wavFile,nmat2,nstruct1.timeBeats);
-           fprintf('Done!\n');
+           %fprintf(['Performing midi beat aligment based on beat extraction from audio backing track: \n',files(i,1).name,'...']);
+           %nmat2=beatTrackMidiAlign(wavFile,nmat2,nstruct1.timeBeats);
+           %fprintf('Done!\n');
 
            %% Align performance 2 score
            %Shift both sequences to same octave
@@ -73,11 +73,11 @@ for i=1:numberOfFiles, %for each file (do not count . and ..
            fprintf(['Performing aligment betwen performance and score...\n']); 
            
            %aligment using dinamic time wrapping, with distance function based on cost of onsets, pitch duration and legato
-%           [H2, p2s,fig1,pnroll] = dtwSig(nmat1,nmat2, 0.6   , 0.1   ,        1   ,           0.5   ,        0.6      , 'no'       ,0.3);
+           [H2, p2s,fig1,pnroll] = dtwSig(nmat1,nmat2, 0.6   , 0.1   ,        1   ,           0.5   ,        0.6      , 'no'       ,0.3);
            %                                                  pitchW, durW, OnsetW, iniLegatoW,lastLegatoW, inverted, legato_threshold(gap betwen two notes in beats fraction) );
            %Aligment using anotated data
            
-           p2s=anotationsProcess2([path_file_s(1:end-5),'annotations/',files(i,1).name(1:end-4)]);%read all anotated data of one song
+           %p2s=anotationsProcess2([path_file_s(1:end-5),'annotations/',files(i,1).name(1:end-4)]);%read all anotated data of one song
     
            
            fprintf(['Printing score vs perform aligment. Check for errors and press any key...\n']);

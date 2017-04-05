@@ -36,7 +36,11 @@ for k = 0:allMeasures.getLength-1
         timeBeats=attributeKey.getElementsByTagName('fifths');%get fiths node (this is the key in the cycle of fifiths with rescpect to C
         nstruct.keyFifths=str2num(char(timeBeats.item(0).getFirstChild.getData));%get data from node
         keyMode=attributeKey.getElementsByTagName('mode');%get mode node (major or minor)
-        nstruct.keyMode=char(keyMode.item(0).getFirstChild.getData);%get data from node
+        %NOT WORKING
+        %nstruct.keyMode=char(keyMode.item(0).getFirstChild.getData);%get data from node
+        %MARC FIX
+        nstruct.keyMode=char(keyMode.item(0));
+
         %Time Signature
         attributeTime=measureAttributes.getElementsByTagName('time').item(0);%get attribute node
         timeBeats=attributeTime.getElementsByTagName('beats');%get time beat node (time signature numerator)

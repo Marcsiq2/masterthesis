@@ -53,10 +53,10 @@
         <direction-type>
           <metronome parentheses="no">
             <beat-unit>quarter</beat-unit>
-            <per-minute>100</per-minute>
+            <per-minute>80</per-minute>
             </metronome>
           </direction-type>
-        <sound tempo="100"/>
+        <sound tempo="79.9998"/>
         </direction>
       <harmony print-frame="no">
         <root>
