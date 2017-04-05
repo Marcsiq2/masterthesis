@@ -13,15 +13,11 @@ hopSize = 128
 frameSize = 2048
 sampleRate = 44100
 lenPowThre = 0.1
-minNoteLen = 0.03  # minimum note length defined in 30 ms
+minNoteLen = 0.06 # minimum note length defined in 30 ms
 
 def write_midi_notes(MyMIDI, track, pitch_m, onset_b, dur_b, vel):
     for i in range(len(pitch_m)):
-        p = pitch_m[i]
-        t = onset_b[i]
-        d = dur_b[i]
-        v = vel[i]
-        MyMIDI.addNote(track, 0, p, t, d, v)
+        MyMIDI.addNote(track, 0, pitch_m[i], onset_b[i], dur_b[i], vel[i])
 
 def f02nmat(folderName, fileName, f0, pwr, bpm, filter_opt, plot_noise_filter, plot_filters, minFrequency, maxFrequency):
     print('...creating MIDI data from pitch profile...')

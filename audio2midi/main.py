@@ -12,9 +12,8 @@ import midi_utils
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
-INPUT_FOLDER = '../Files/guitar_in/helena_song3/'
-OUTPUT_FILE = '../Files/extracted_midi/helena_song3/output.mid'
-OUTPUT_FILE_SPLITTED = '../Files/extracted_midi/helena_song3/output_splitted.mid'
+INPUT_FOLDER = '../Files/guitar_in/helena_song1/'
+OUTPUT_FILE = '../Files/extracted_midi/helena_song1/outputtest.mid'
 
 def main():
 
@@ -28,29 +27,24 @@ def main():
     if len(folderName ) <= 0:
         print "No folder selected!"
     else:
-        
+    
         print "You chose %s" % folderName
         files = [fileName for fileName in os.listdir(folderName) if fileName[-3:] == "wav"]
-        MyMIDI_split = MIDIFile(numTracks=len(files), adjust_origin=False)
-        MyMIDI = MIDIFile(numTracks=1, adjust_origin=False)
-        MyMIDI.addTempo(0, 0, 110)
-
+        MyMIDI = MIDIFile(numTracks=len(files), adjust_origin=False)
+        MyMIDI.addTrackName(0,0, 'all')
         for track in range(1,7): #Get files name list from performance folder (wavs)
-            fileName = 'string%i.wav' % track
+            fileName = 'string%s.wav' % str(track)
             print '\nProcessing: %s' % fileName
-            MyMIDI_split.addTempo(track-1, 0, 110)
-            MyMIDI_split.addTrackName(track-1, 0, fileName[:-4])
+            MyMIDI.addTempo(track, 0, 110)
+            MyMIDI.addTrackName(track, 0, fileName[:-4])
             pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName)
-            midi_utils.write_midi_notes(MyMIDI_split, track-1, pitch_m, onset_b, dur_b, vel)
+            midi_utils.write_midi_notes(MyMIDI, track, pitch_m, onset_b, dur_b, vel)
             midi_utils.write_midi_notes(MyMIDI, 0, pitch_m, onset_b, dur_b, vel)
         #save midi files
-        binfile = open(OUTPUT_FILE_SPLITTED, 'wb')
-        MyMIDI_split.writeFile(binfile)
-        binfile.close()
-
         binfile = open(OUTPUT_FILE, 'wb')
         MyMIDI.writeFile(binfile)
         binfile.close()
+
         print "SUCCESS!!!"
 
     return

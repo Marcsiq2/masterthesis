@@ -317,11 +317,11 @@ def pitchContSeg(folderName, fileName, pitch_profile):
     print ('...creating MIDI data from pitch profile using pitch contour segmentation...'),
     # create algorithms
     run_pitchContourSegmentation = PitchContourSegmentation(hopSize = hopSize, #(integer ∈ (0, ∞), default = 128) :hop size of the extracted pitch
-                                                            minDur = 0.1, #(real ∈ (0, ∞), default = 0.1) :minimum note duration [s]
+                                                            minDuration = 0.1, #(real ∈ (0, ∞), default = 0.1) :minimum note duration [s]
                                                             pitchDistanceThreshold = 60, # (integer ∈ (0, ∞), default = 60) :pitch threshold for note segmentation [cents]
                                                             rmsThreshold = -2, # (integer ∈ (-∞, 0), default = -2) :zscore threshold for note segmentation
                                                             sampleRate = sampleRate, # (integer ∈ (0, ∞), default = 44100) :sample rate of the audio signal
-                                                            tuningFreq = 440, # (integer ∈ (0, 22000), default = 440) :tuning reference frequency [Hz]
+                                                            tuningFrequency = 440, # (integer ∈ (0, 22000), default = 440) :tuning reference frequency [Hz]
                                                             )
 
 
