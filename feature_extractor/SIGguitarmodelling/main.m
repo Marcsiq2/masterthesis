@@ -48,7 +48,7 @@ for i=1:numberOfFiles, %for each file (do not count . and ..
 
            %% Read midi performance
            fprintf(['Converting performance wav file in to MIDI matix: ',files(i,1).name,'...']);
-           nmat2=midi2nmat([path_file_s(1:end-11),'\extracted_midi\',files(i,1).name(1:end-4),'.mid',]);%Read midi file into nmat!!! (by me!)
+           nmat2=midi2nmat([path_file_s(1:end-11),'/extracted_midi/',files(i,1).name(1:end-4),'.mid',]);%Read midi file into nmat!!! (by me!)
            
            %%%%Here wi will use the function to transcribe audio to midi by
            %Helena
@@ -103,33 +103,33 @@ for i=1:numberOfFiles, %for each file (do not count . and ..
             pnrll=aligmentPlot(nmat1,nmat2,p2s,octShift);
            %% Create database of ornaments
            
-           emb = embellish(nmat1,nmat2,p2s); %returns a structure     
-           emb=addAttribute(emb, files(i,1).name, 'fileName');  %set constant descriptors (ej. tempo) to each not
+           %emb = embellish(nmat1,nmat2,p2s); %returns a structure     
+           %emb=addAttribute(emb, files(i,1).name, 'fileName');  %set constant descriptors (ej. tempo) to each not
            
            
             %% is the note embellished?
            
-            score_s=isEmbellished(score_s,emb);
+            %score_s=isEmbellished(score_s,emb);
            
            %% Concatenate with previous data of files already parsed SCORE
 
-        if flag1==0%if first loop
-            score_all=score_s;
-            flag1=1;
-        else
-            score_all=structCat(score_all,score_s);
-        end
-        fprintf('Done!\n');
+%         if flag1==0%if first loop
+%              score_all=score_s;
+%             flag1=1;
+%         else
+%             score_all=structCat(score_all,score_s);
+%         end
+%         fprintf('Done!\n');
             %% concatenate data.... PERFORMED
-
-        if flag2==0%if first loop
-            emb_all=emb;
-            flag2=1;
-        else
-            emb_all=structCat(emb_all,emb);
-        end
-        fprintf('Done!\n');
-        
+% 
+%         if flag2==0%if first loop
+%             emb_all=emb;
+%             flag2=1;
+%         else
+%             emb_all=structCat(emb_all,emb);
+%         end
+%         fprintf('Done!\n');
+%         
            %% Save Data
 %            saveFile=[path_file_p(1:end-10),'Data/',files(i,1).name(1:end-4),'.mat'];
 %             save(saveFile);
@@ -143,10 +143,10 @@ for i=1:numberOfFiles, %for each file (do not count . and ..
     end
   end
 end
-
+score_all = score_s;
 %save data
-save([path_file_s(1:end-12),'dataOut/emb.mat'],'emb_all');
-save([path_file_s(1:end-12),'dataOut/score_descript.mat'],'score_all');
+%save([path_file_s(1:end-12),'dataOut/emb.mat'],'emb_all');
+save([path_file_s(1:end-11),'/dataOut/score_descript.mat'],'score_all');
 
 %%open pre calculated data
 %     cd(pwd)
@@ -157,7 +157,7 @@ save([path_file_s(1:end-12),'dataOut/score_descript.mat'],'score_all');
 fprintf('Creating arff files...\n');
 %score_all_2=struct_cell_parse(score_all);%parse cell fields to cell char
 atrib=attributes(score_all,score_all);%create atribute list
-arff_write('dataOut/arffs/embellish.arff',score_all,'train',atrib);%write train data set for embellishment 
+arff_write('Files/dataOut/arffs/score.arff',score_all,'train',atrib, 'marc');%write train data set for embellishment 
 
   
  fprintf('SUCCESS!!!')

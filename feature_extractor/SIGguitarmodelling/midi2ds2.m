@@ -63,7 +63,7 @@ score_s.next_int = -(score_s.pitch - circshift(score_s.pitch,-1));
 %create notes vector
 
 score_s=addAttribute(score_s, nstruct.keyFifths, 'keyFifits');%Set key in the cycle of fifths
-score_s=addAttribute(score_s, nstruct.keyMode, 'keyMode');%set mode major or minor
+%score_s=addAttribute(score_s, nstruct.keyMode, 'keyMode');%set mode major or minor
 
 %% Melodic analysis respect to key
 

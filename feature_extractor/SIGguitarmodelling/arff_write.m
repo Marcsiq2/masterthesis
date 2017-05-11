@@ -39,9 +39,9 @@ for i=1:(length(header))%we will concatenate strings to the size of headers
     else
         
         if cell_class(i)==0
-            format2=[format2,'%f\r\n,'];%if not cell class use float format
+            format2=[format2,'%f\r\n'];%if not cell class use float format
         else
-            format2=[format2,'%s\r\n,'];%else use string format
+            format2=[format2,'%s\r\n'];%else use string format
         end
         
         % %        if isfield(s,'emb')&&strcmp(trainOrTest,'test')
