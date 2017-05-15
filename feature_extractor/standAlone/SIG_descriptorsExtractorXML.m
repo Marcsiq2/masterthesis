@@ -57,9 +57,6 @@ function SIG_descriptorsExtractorXML(batch)
 
 path_list_cell = path;
 
-if isempty(strfind(path_list_cell, 'MIDItoolbox'))
-    error('Please install and add the MIDItoolbox path before runing this code. MIDItoolbox can be dounloaded from https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/miditoolbox. Use addpath command to add MIDItoolbox path to your matlab enviroment.');
-else
     
     if batch==1
         path_file_s=uigetdir('Choose the folder in which XML scores are stored');%Get the directory path where the midi and xml files are stored
@@ -95,8 +92,7 @@ else
             main_parse_files(path_file_s,files,numberOfFiles, PA_list{j});
         end
     end
-    
-end
+
 end
 
 function main_parse_files(path_file_s,files,numberOfFiles, PA, PA_idx)

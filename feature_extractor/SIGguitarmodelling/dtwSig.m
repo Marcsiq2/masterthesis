@@ -1,4 +1,4 @@
-function [H, tbk,fig1,pnrll] = dtwSig(nmat,nmat2, pitchW, durW,onsetW,iniLegatoW,lastLegatoW, inv,th)
+function [H, tbk] = dtwSig(nmat,nmat2, pitchW, durW,onsetW,iniLegatoW,lastLegatoW, inv,th)
 
 %   legato onset cost: Here we are assuming that when an ornament of a note
 %   is composed by a grup of notes, these notes are played in legato. So
@@ -130,7 +130,7 @@ end
 tbk=tbk(2:end,:)-1;
 
  %% Plot aligment
- fig1=figure (3);
+ figure;
  image(sqrt(H(2:end,2:end)), 'CDataMapping','scaled');
  figure(gcf);
  hold on
@@ -141,7 +141,7 @@ tbk=tbk(2:end,:)-1;
  ylabel(hndl,'Cost');
  
  %plot piano roll
- pnrll=aligmentPlot(nmat,nmat2,tbk,12);
+ aligmentPlot(nmat,nmat2,tbk,12);
 
 end
 function legatoOnset=findLegatoOnset(nmat,i,th)

@@ -30,7 +30,7 @@ nmat2=shift(nmat2,'pitch',-octShift*12);
 %scrsz = get(0,'ScreenSize');% get screen size
 %figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2])
 
-pnrll=figure('Position',screen_pos);%plot piano roll in half of the screen
+pnrll=figure;%plot piano roll in half of the screen
 
 pianoroll(nmat);
 %subplot(2,1,2)
