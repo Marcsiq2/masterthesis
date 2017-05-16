@@ -10,7 +10,7 @@ score = [score_pn,'/',score_fn];
 
 %% Read xml file into nmat and nstruct
 fprintf(['Reading score xml file into matix and structures: ', score_fn,'...']);
-[nmat, nstruct]=xml2nmat(score);%Read xml file into nmat!!! (sergio Giraldo)
+[nmat, nstruct]=xml2nmat(score);%Read xml file into nmat!
 %[nmat, nstruct]=xmlMusicParse(score);%read data from xml file
 fprintf('Done!\n');
 
@@ -65,10 +65,9 @@ fprintf('Done!\n');
 %performance, we ommit the second one... Becasuse we can...
 p2s=unique_sig(p2s); 
 
-%% Create database of ornaments
-           
-emb = embellish(nmat_midi,nmat_per,p2s); %returns a structure     
-emb=addAttribute(emb, score_fn, 'fileName');  %set constant descriptors (ej. tempo) to each not
+%% Create database of ornaments            
+% emb = embellish(nmat_midi,nmat_per,p2s); %returns a structure     
+% emb=addAttribute(emb, score_fn, 'fileName');  %set constant descriptors (ej. tempo) to each not
 
 %% Save extracted descriptors
 %saving to nmat
@@ -78,6 +77,6 @@ fprintf('Done!\n');
 %savint to arff
 fprintf(['Saving descriptors to file: ', score_fn(1:end-4),'_perf.arff...']);
 atrib=attributes(score_p,score_p);%create atribute list
-arff_write([score_pn(1:end-11),'dataOut/arff/', score_fn(1:end-4),'_perf.arff'],score_p,'performance',atrib, score_fn(1:end-4));%write train data set for embellishment 
+arff_write([score_pn(1:end-11),'dataOut/arff/', score_fn(1:end-4),'_perf.arff'],score_p,'performance',atrib, score_fn(1:end-4));
 fprintf('Done!\n')
            
