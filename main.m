@@ -44,7 +44,7 @@ nmat_per = midi2nmat([score_pn(1:end-11),'extracted_midi/',score_fn(1:end-4),'.m
 
 %% Processing
 score_p=midi2ds2(nmat_per,nstruct);
-score_p=addAttribute(score_d, score_fn, 'fileName');
+score_p=addAttribute(score_p, score_fn, 'fileName');
 fprintf('Done!\n');
 
 %% Align performance 2 score
@@ -55,18 +55,20 @@ nmat_midi(:,4)=nmat_midi(:,4)+octaveOffset;%shift octave
 %% Create aligment matrix
 fprintf(['Performing aligment betwen performance and score...\n']); 
 %aligment using dinamic time wrapping, with distance function based on cost of onsets, pitch duration and legato
-[H2, p2s] = dtwSig(nmat_midi,nmat_per, 0.6, 0.1, 1, 0.5, 0.6, 'no', 0.3);
-% pitchW, durW, OnsetW, iniLegatoW,lastLegatoW, inverted, legato_threshold(gap betwen two notes in beats fraction) );
+plot = 1; %Plot = 1 plots performance aligment
+[H2, p2s] = dtwSig(nmat_midi,nmat_per, 0.6, 0.1, 1, 0.5, 0.6, 'no', 0.3, plot);
+% pitchW, durW, OnsetW, iniLegatoW,lastLegatoW, inverted, legato_threshold(gap betwen two notes in beats fraction), plot );
 fprintf('Done!\n');
 
 %% note omisions... If a score note is omited in the performance
  %(or two notes of the score are related to one of the
 %performance, we ommit the second one... Becasuse we can...
 p2s=unique_sig(p2s); 
+
 %% Create database of ornaments
            
-%emb = embellish(nmat_midi,nmat_per,p2s); %returns a structure     
-%emb=addAttribute(emb, score_fn, 'fileName');  %set constant descriptors (ej. tempo) to each not
+emb = embellish(nmat_midi,nmat_per,p2s); %returns a structure     
+emb=addAttribute(emb, score_fn, 'fileName');  %set constant descriptors (ej. tempo) to each not
 
 %% Save extracted descriptors
 %saving to nmat
