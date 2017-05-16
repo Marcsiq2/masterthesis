@@ -41,6 +41,29 @@ score_s.pitch_mod=rem(score_s.pitch,12);
 %C#=1...etc
 %B=11
 
+%% Number of simultaneous note:
+% 0 = single note
+score_s.n_simult=zeros(size(nmat,1),1);
+int = zeros(size(nmat,1),size(nmat,1));
+for i=1:size(nmat,1)
+    
+    for j = 1:10
+        if i+j < size(nmat,1)
+            if nmat(i,6)+nmat(i,7) > nmat(i+j,6)
+                score_s.n_simult(i) = score_s.n_simult(i)+1;
+                int (i,j) = nmat(i,4) - nmat(i+j,4);
+            end
+        end
+        if i-j > 0
+            if nmat(i,6) < nmat(i-j,6)+nmat(i-j,7)
+                score_s.n_simult(i) = score_s.n_simult(i)+1;
+                int (i,j+10) = nmat(i,4) - nmat(i-j,4);
+            end
+        end
+    end
+    
+end
+int = int(:, any(int));
 %% Previous and next interval
 score_s.prev_int = -(score_s.pitch - circshift(score_s.pitch,1));
 score_s.next_int = -(score_s.pitch - circshift(score_s.pitch,-1));
