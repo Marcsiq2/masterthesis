@@ -5,7 +5,7 @@ score_s= struct;
 
 %% Create labels to structure according to midi data
 score_s.onset_b = nmat(:,1);
-score_s.duration_b = nmat(:,2);
+score_s.dur_b = nmat(:,2);
 score_s.ch = nmat(:,3);
 score_s.pitch = nmat(:,4);
 score_s.vel = nmat(:,5);
@@ -16,24 +16,25 @@ score_s.dur_s = nmat(:,7);
 score_s.measure=floor((nmat(:,1)./4))+1;
 
 %% Create "previous duration" column
-score_s.pre_dur_b = circshift(score_s.duration_b,1);
+score_s.pre_dur_b = circshift(score_s.dur_b,1);
 score_s.pre_dur_b(1) = 0; %initial value is zero as it is the first note
 score_s.pre_dur_s=score_s.pre_dur_b*60/nstruct.tempo;
 
 %% Create "Next duration" column
-score_s.nxt_dur_b = circshift(score_s.duration_b,-1);
+score_s.nxt_dur_b = circshift(score_s.dur_b,-1);
 score_s.nxt_dur_b(length (score_s.nxt_dur_b)) = 0;%last value is zero as it is the last note
 score_s.nxt_dur_s=score_s.nxt_dur_b*60/nstruct.tempo;
 
 
+%% Create Previous and next inter-onset column
+score_s.pre_ionset_s = circshift(score_s.onset_s,1);
+score_s.pre_ionset_s(1) = 0;
+score_s.nxt_ionset_s = circshift(score_s.onset_s, -1);
+score_s.pre_ionset_s(length(score_s.pre_ionset_s)) = 0;
+
 %% Onset beat mod (beat onset at current measure)
 score_s.onset_b_mod=rem((score_s.onset_b),4);%check out if summing 1 or not
 
-%% We decided not to sume zero to the beat, so defeinition remains:
-% beat 1=0
-% beat 2=1
-% beat 3=2
-% beat 4=3
 
 %% Note pitch mod
 score_s.pitch_mod=rem(score_s.pitch,12);
@@ -43,19 +44,20 @@ score_s.pitch_mod=rem(score_s.pitch,12);
 
 %% Number of simultaneous note:
 % 0 = single note
+tau = 0.5; % seconds to define simultaneity
 score_s.n_simult=zeros(size(nmat,1),1);
 int = zeros(size(nmat,1),size(nmat,1));
 for i=1:size(nmat,1)
     
     for j = 1:10
         if i+j < size(nmat,1)
-            if nmat(i,6)+nmat(i,7) > nmat(i+j,6)
+            if nmat(i,6)+nmat(i,7) - nmat(i+j,6) > tau
                 score_s.n_simult(i) = score_s.n_simult(i)+1;
                 int (i,j) = nmat(i,4) - nmat(i+j,4);
             end
         end
         if i-j > 0
-            if nmat(i,6) < nmat(i-j,6)+nmat(i-j,7)
+            if nmat(i-j,6)+nmat(i-j,7) - nmat(i,6) > tau
                 score_s.n_simult(i) = score_s.n_simult(i)+1;
                 int (i,j+10) = nmat(i,4) - nmat(i-j,4);
             end
@@ -83,8 +85,8 @@ score_s.next_int = -(score_s.pitch - circshift(score_s.pitch,-1));
 %linear representation (ej. CDEFG... etc)
 %create notes vector
 
-score_s=addAttribute(score_s, nstruct.keyFifths, 'keyFifits');%Set key in the cycle of fifths
-%score_s=addAttribute(score_s, nstruct.keyMode, 'keyMode');%set mode major or minor
+score_s=addAttribute(score_s, nstruct.keyFifths, 'keyFifths');%Set key in the cycle of fifths
+score_s=addAttribute(score_s, nstruct.keyMode, 'keyMode');%set mode major or minor
 
 %% Melodic analysis respect to key
 
@@ -164,8 +166,8 @@ for i=1:size(nmat,1),
 %     
     chtid=find(strcmp(ext_id{1},score_s.chord_type{i}));%get the chord type index of the current note    
     if numel(chtid)==0
-         score_s.isChordN{i}='n';%if there is no chord note is labeled as not belonging to chord note... (think)
-    else if ~isempty(find(cell2mat(ext_c{chtid}(2:end))==score_s.note2chord(i), 1))%if the note2chord is in the chord type description
+         score_s.isChordN{i}='n';%if there is no chord, note is labeled as not belonging to chord note... (think)
+    else if ~isempty(find(cell2mat(ext_c{chtid}(2:end))==score_s.note2chord(i)+1, 1))%if the note2chord is in the chord type description
             score_s.isChordN{i}='y';
         else
         score_s.isChordN{i}='n';

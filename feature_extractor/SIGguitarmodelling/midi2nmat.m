@@ -225,7 +225,7 @@ for i=1:length(tracklist)
       if (endtime == -1)
 	endtime = seconds;
       else
-	disp('two "end of track" messages?');
+	%disp('two "end of track" messages?');
 	endtime(end+1) = seconds;
       end
     
