@@ -7,8 +7,9 @@ import sys
 import os
 import csv
 import numpy as np
-import Tkinter, tkFileDialog
 import midi_utils
+import multiprocessing
+from multiprocessing import Pool
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
@@ -25,14 +26,17 @@ def main():
         files = [fileName for fileName in os.listdir(folderName) if ((fileName[-3:] == "wav") & (fileName != "all.wav"))]
         print "You chose %s with %s file" % (folderName, str(len(files)))
         MyMIDI = MIDIFile(numTracks=1, adjust_origin=False)
+        MyMIDI.addTrackName(0,0, 'all')
         MyMIDI.addTempo(0, 0, 110)
+
+        pool = NoDaemonPool(processes=len(files))
 
         for track in range(1,7): #Get files name list from performance folder (wavs)
             fileName = 'string%s.wav' % str(track)
             print '\nProcessing: %s' % fileName
-            pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName)
-            midi_utils.write_midi_notes(MyMIDI, track-1, pitch_m, onset_b, dur_b, vel)
-            #midi_utils.write_midi_notes(MyMIDI, 0, pitch_m, onset_b, dur_b, vel)
+
+            pool.apply_async(processtrack, args=(folderName, track, fileName, MyMIDI))
+
         #save midi files
         binfile = open(OUTPUT_FILE, 'wb')
         MyMIDI.writeFile(binfile)
@@ -44,7 +48,9 @@ def main():
 
 
 
-
+def processtrack(folderName, track, fileName, MyMidi):
+    pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName)
+    midi_utils.write_midi_notes(MyMIDI, track, pitch_m, onset_b, dur_b, vel)
 
 
 def extractionProcess(folderName, fileName):
@@ -109,6 +115,18 @@ def extractionProcess(folderName, fileName):
     print "done"
 
     return
+
+class NoDaemonProcess(multiprocessing.Process):
+    # make 'daemon' attribute always return False
+    def _get_daemon(self):
+        return False
+    def _set_daemon(self, value):
+        pass
+    daemon = property(_get_daemon, _set_daemon)
+
+class NoDaemonPool(multiprocessing.pool.Pool):
+    Process = NoDaemonProcess
+
 
 if __name__ == "__main__":
     main()
