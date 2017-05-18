@@ -12,8 +12,8 @@ import midi_utils
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
-INPUT_FOLDER = '../Files/guitar_in/helena_song1/'
-OUTPUT_FILE = '../Files/extracted_midi/helena_song1/output_channel.mid'
+INPUT_FOLDER = '../Files/guitar_in/helena_song3/'
+OUTPUT_FILE = '../Files/extracted_midi/helena_song3/output_channel.mid'
 
 def main():
 
@@ -25,13 +25,13 @@ def main():
         files = [fileName for fileName in os.listdir(folderName) if ((fileName[-3:] == "wav") & (fileName != "all.wav"))]
         print "You chose %s with %s file" % (folderName, str(len(files)))
         MyMIDI = MIDIFile(numTracks=1, adjust_origin=False)
-        MyMIDI.addTempo(0, 0, 110)
+        MyMIDI.addTempo(0, 0, 80)
 
         for track in range(1,7): #Get files name list from performance folder (wavs)
             fileName = 'string%s.wav' % str(track)
             print '\nProcessing: %s' % fileName
-            pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName)
-            midi_utils.write_midi_notes(MyMIDI, track-1, pitch_m, onset_b, dur_b, vel)
+            pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName, 80)
+            midi_utils.write_midi_notes(MyMIDI, track-1, pitch_m[1:], onset_b[1:], dur_b[1:], vel[1:])
             #midi_utils.write_midi_notes(MyMIDI, 0, pitch_m, onset_b, dur_b, vel)
         #save midi files
         binfile = open(OUTPUT_FILE, 'wb')
@@ -47,7 +47,7 @@ def main():
 
 
 
-def extractionProcess(folderName, fileName):
+def extractionProcess(folderName, fileName, bpm):
 
     # options
 
@@ -67,7 +67,6 @@ def extractionProcess(folderName, fileName):
     freqs_guitar = [(320,660), (240,500), (190, 400), (140, 300), (100, 230), (80, 170)]
     minFrequency = 80  # E2 = 82.412Hz guitar lowest E
     maxFrequency = 2000  # D6 = 1175Hz guitar highest note
-    bpm = 110
 
     if guitar_splitted:
         minFrequency, maxFrequency = freqs_guitar[string-1]

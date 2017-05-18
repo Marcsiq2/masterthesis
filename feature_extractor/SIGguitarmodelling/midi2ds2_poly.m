@@ -6,7 +6,7 @@ score_s= struct;
 %% Create labels to structure according to midi data
 score_s.onset_b = nmat(:,1);
 score_s.dur_b = nmat(:,2);
-score_s.ch = nmat(:,3);
+score_s.string = nmat(:,3)+1;
 score_s.pitch = nmat(:,4);
 score_s.vel = nmat(:,5);
 score_s.onset_s= nmat(:,6);

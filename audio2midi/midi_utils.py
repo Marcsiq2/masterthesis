@@ -13,7 +13,7 @@ hopSize = 128
 frameSize = 2048
 sampleRate = 44100
 lenPowThre = 0.1
-minNoteLen = 0.06 # minimum note length defined in 30 ms
+minNoteLen = 0.1 # minimum note length defined in 30 ms
 
 def write_midi_notes(MyMIDI, track, pitch_m, onset_b, dur_b, vel):
     for i in range(len(pitch_m)):

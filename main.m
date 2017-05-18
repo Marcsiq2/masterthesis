@@ -56,7 +56,9 @@ nmat_sco(:,4)=nmat_sco(:,4)+octaveOffset;%shift octave
 fprintf(['Performing aligment betwen performance and score...']); 
 %aligment using dinamic time wrapping, with distance function based on cost of onsets, pitch duration and legato
 plot = 1; %Plot = 1 plots performance aligment
-[H2, p2s] = dtwSig(nmat_sco,nmat_per, 0.6, 0.1, 1, 0.5, 0.6, 'no', 0.3, plot);
+%[H2, p2s] = dtwSig(nmat_sco,nmat_per, 0.6, 0.1, 1, 0.5, 0.6, 'no', 0.3, plot);
+[H2, p2s] = dtwSig(nmat_sco,nmat_per, 1, 0.1, 0.1, 0, 0, 'no', 3, plot);
+
 % pitchW, durW, OnsetW, iniLegatoW,lastLegatoW, inverted, legato_threshold(gap betwen two notes in beats fraction), plot );
 fprintf('Done!\n');
 
