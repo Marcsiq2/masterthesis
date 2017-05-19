@@ -142,7 +142,7 @@ tbk=tbk(2:end,:)-1;
      ylabel(hndl,'Cost');
 
      %plot piano roll
-     aligmentPlot(nmat,nmat2,tbk,1);
+     aligmentPlot(nmat,nmat2,tbk,2);
  end
 end
 function legatoOnset=findLegatoOnset(nmat,i,th)
