@@ -6,7 +6,7 @@ score_s= struct;
 %% Create labels to structure according to midi data
 score_s.onset_b = nmat(:,1);
 score_s.dur_b = nmat(:,2);
-score_s.string = nmat(:,3)+1;
+score_s.string = nmat(:,3);
 score_s.pitch = nmat(:,4);
 score_s.vel = nmat(:,5);
 score_s.onset_s= nmat(:,6);
@@ -27,10 +27,10 @@ score_s.nxt_dur_s=score_s.nxt_dur_b*60/nstruct.tempo;
 
 
 %% Create Previous and next inter-onset column
-score_s.pre_ionset_s = circshift(score_s.onset_s,1);
+score_s.pre_ionset_s = circshift(score_s.onset_s,1) - score_s.onset_s;
 score_s.pre_ionset_s(1) = 0;
-score_s.nxt_ionset_s = circshift(score_s.onset_s, -1);
-score_s.pre_ionset_s(length(score_s.pre_ionset_s)) = 0;
+score_s.nxt_ionset_s = circshift(score_s.onset_s, -1) - score_s.onset_s;
+score_s.nxt_ionset_s(length(score_s.pre_ionset_s)) = 0;
 
 %% Onset beat mod (beat onset at current measure)
 score_s.onset_b_mod=rem((score_s.onset_b),4);%check out if summing 1 or not
@@ -46,26 +46,29 @@ score_s.pitch_mod=rem(score_s.pitch,12);
 % 0 = single note
 tau = 0.5; % seconds to define simultaneity
 score_s.n_simult=zeros(size(nmat,1),1);
-int = zeros(size(nmat,1),size(nmat,1));
+
 for i=1:size(nmat,1)
     
     for j = 1:10
         if i+j < size(nmat,1)
             if nmat(i,6)+nmat(i,7) - nmat(i+j,6) > tau
                 score_s.n_simult(i) = score_s.n_simult(i)+1;
-                int (i,j) = nmat(i,4) - nmat(i+j,4);
             end
         end
         if i-j > 0
             if nmat(i-j,6)+nmat(i-j,7) - nmat(i,6) > tau
                 score_s.n_simult(i) = score_s.n_simult(i)+1;
-                int (i,j+10) = nmat(i,4) - nmat(i-j,4);
             end
         end
     end
     
 end
-int = int(:, any(int));
+%int = int(:, any(int));
+
+%% ischord
+
+
+
 %% Previous and next interval
 score_s.prev_int = -(score_s.pitch - circshift(score_s.pitch,1));
 score_s.next_int = -(score_s.pitch - circshift(score_s.pitch,-1));
@@ -86,7 +89,7 @@ score_s.next_int = -(score_s.pitch - circshift(score_s.pitch,-1));
 %create notes vector
 
 score_s=addAttribute(score_s, nstruct.keyFifths, 'keyFifths');%Set key in the cycle of fifths
-score_s=addAttribute(score_s, nstruct.keyMode, 'keyMode');%set mode major or minor
+%score_s=addAttribute(score_s, nstruct.keyMode, 'keyMode');%set mode major or minor
 
 %% Melodic analysis respect to key
 

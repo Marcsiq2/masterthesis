@@ -13,6 +13,7 @@ function score_s_pa = perfactions(score_s, nmat_s, nmat_p, p2s, score_fn)
         %% calculate performance actions
         % is note embellished {yes , no}
         score_s_pa = isEmbellished(score_s,transformation_ds);
+        score_s_pa.string = nmat_p(:,3)+1;
         % average duration_rat, onset_dev, pitch_dev, and energy_rat
         score_s_pa = averagePas(score_s_pa, nmat_s, nmat_p, transformation_ds);
         
