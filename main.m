@@ -50,14 +50,23 @@ fprintf('Done!\n');
 fprintf('Performing aligment betwen performance and score...'); 
 %aligment using dinamic time wrapping, with distance function based on cost of onsets, pitch duration and legato
 nmat_per_0of = shift(nmat_per, 'onset', -nmat_per(1,1));
-%[~, p2s] = dtwSig(nmat_sco,nmat_per, 0.6, 0.1, 1, 0.5, 0.6, 'no', 0.3, plot);
-%[~, p2s] = dtwSig(nmat_sco(1:55,:),nmat_per_0of(1:70,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
-[~, p2s] = dtwSig(nmat_sco,nmat_per_0of, 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
-aligmentPlot(nmat_sco,nmat_per_0of,p2s, 2);
-%aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s, 2);
-%aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s_manual, 2);
+%[~, p2s] = dtwSig(nmat_sco,nmat_per_0of, 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+%[~, p2s] = dtwSig(nmat_sco(1:20,:),nmat_per_0of(1:28,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+[~, p2s] = dtwSig(nmat_sco(1:55,:),nmat_per_0of(1:70,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+
+%figu = aligmentPlot(nmat_sco,nmat_per_0of,p2s, 2);
+%figu = aligmentPlot(nmat_sco(1:20,:),nmat_per_0of(1:28,:),p2s, 2);
+%figu = aligmentPlot(nmat_sco(1:20,:),nmat_per_0of(1:28,:),p2s_manual(1:28,:), 2);
+%figu = aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s, 2);
+figu = aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s_manual, 2);
+
 % pitchW, durW, OnsetW, iniLegatoW,lastLegatoW, inverted, legato_threshold(gap betwen two notes in beats fraction), plot );
 fprintf('Done!\n');
+
+%% Save figure as pdf
+set(figu, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
+set(figu, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
+print(figu,'Files/Figures/Darn_20b_corrected.pdf','-dpdf','-r0')
 
 %% note omisions... If a score note is omited in the performance
  %(or two notes of the score are related to one of the
