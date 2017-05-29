@@ -31,10 +31,6 @@ score_d=addAttribute(score_d, score_fn, 'fileName');
 fprintf(['Reading performance midi file into matrix: ',score_fn(1:end-4),'.mid...']);
 nmat_per = midi2nmat([score_pn(1:end-11),'extracted_midi/',score_fn(1:end-4),'.mid']);%Read midi file into nmat!!! (by me!)
 nmat_per(:,3) = nmat_per(:,3)+1;
-%% Processing
-performance_d=midi2ds2_poly(nmat_per,nstruct_sco);
-performance_d=addAttribute(performance_d, score_fn, 'fileName');
-fprintf('Done!\n');
 
 %% Align performance 2 score
 %Shift both sequences to same octave
@@ -49,24 +45,47 @@ fprintf('Done!\n');
 %% Score Performance alignment
 fprintf('Performing aligment betwen performance and score...'); 
 %aligment using dinamic time wrapping, with distance function based on cost of onsets, pitch duration and legato
+
+%Tempo deviation correction
 nmat_per_0of = shift(nmat_per, 'onset', -nmat_per(1,1));
-%[~, p2s] = dtwSig(nmat_sco,nmat_per_0of, 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
-%[~, p2s] = dtwSig(nmat_sco(1:20,:),nmat_per_0of(1:28,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
-[~, p2s] = dtwSig(nmat_sco(1:55,:),nmat_per_0of(1:70,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+nmat_per_0of(:,1)=nmat_per_0of(:,1)*1.04;
+nmat_per_0of(:,6)=nmat_per_0of(:,6)*1.04;
 
-%figu = aligmentPlot(nmat_sco,nmat_per_0of,p2s, 2);
-%figu = aligmentPlot(nmat_sco(1:20,:),nmat_per_0of(1:28,:),p2s, 2);
-%figu = aligmentPlot(nmat_sco(1:20,:),nmat_per_0of(1:28,:),p2s_manual(1:28,:), 2);
-%figu = aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s, 2);
-figu = aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s_manual, 2);
+%% all score
+[~, p2s] = dtwSig(nmat_sco,nmat_per_0of, 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+figu = aligmentPlot(nmat_sco,nmat_per_0of,p2s, 2);
 
-% pitchW, durW, OnsetW, iniLegatoW,lastLegatoW, inverted, legato_threshold(gap betwen two notes in beats fraction), plot );
-fprintf('Done!\n');
-
-%% Save figure as pdf
 set(figu, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
 set(figu, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
-print(figu,'Files/Figures/Darn_20b_corrected.pdf','-dpdf','-r0')
+print(figu,'Files/Figures/Darn_auto.pdf','-dpdf','-r0')
+
+% %% First 8 beats
+% 
+% [~, p2s_8] = dtwSig(nmat_sco(1:20,:),nmat_per_0of(1:28,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+% figu = aligmentPlot(nmat_sco(1:20,:),nmat_per_0of(1:28,:),p2s_8, 2);
+% figu_m = aligmentPlot(nmat_sco(1:20,:),nmat_per_0of(1:28,:),p2s_manual(1:28,:), 2);
+% 
+% set(figu, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
+% set(figu, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
+% print(figu,'Files/Figures/Darn_8b_auto.pdf','-dpdf','-r0')
+% 
+% set(figu_m, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
+% set(figu_m, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
+% print(figu_m,'Files/Figures/Darn_8b_corrected.pdf','-dpdf','-r0')
+% 
+% %% First 20 beats
+% [~, p2s_20] = dtwSig(nmat_sco(1:55,:),nmat_per_0of(1:70,:), 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+% figu = aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s_20, 2);
+% figu_m = aligmentPlot(nmat_sco(1:55,:),nmat_per_0of(1:70,:),p2s_manual, 2);
+% 
+% set(figu, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
+% set(figu, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
+% print(figu,'Files/Figures/Darn_20b_auto.pdf','-dpdf','-r0')
+% 
+% set(figu_m, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
+% set(figu_m, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
+% print(figu_m,'Files/Figures/Darn_20b_corrected.pdf','-dpdf','-r0')
+% fprintf('Done!\n');
 
 %% note omisions... If a score note is omited in the performance
  %(or two notes of the score are related to one of the
@@ -75,15 +94,15 @@ p2s_manual=unique_sig(p2s_manual);
 
 %% Compute performance actions
 fprintf(['Computing performance actions for: ', score_fn(1:end-4)],'...');
-pactions = perfactions(score_d, nmat_sco,nmat_per_0of, p2s, score_fn);
-%pactions = perfactions(score_d, nmat_sco,nmat_per_0of, p2s_manual, score_fn);
-%pactions = cut_struct(pactions, 55);
+%pactions = perfactions(score_d, nmat_sco, nmat_per_0of, p2s, score_fn);
+pactions = perfactions(score_d, nmat_sco,nmat_per_0of, p2s_manual, score_fn);
+pactions = cut_struct(pactions, 21, 55);
 fprintf('Done!\n')
 
 %% Save performance actions
 fprintf(['Saving performance actions to file: ', score_fn(1:end-4),'_pas.arff...']);
 atrib=attributes(pactions,pactions);%create atribute list
-arff_write([score_pn(1:end-11),'dataOut/arff/', score_fn(1:end-4),'_pas.arff'],pactions,'train',atrib, [score_fn(1:end-4),'_pas']);
+arff_write([score_pn(1:end-11),'dataOut/arff/', score_fn(1:end-4),'_8bto20b_pas.arff'],pactions,'train',atrib, [score_fn(1:end-4),'_pas']);
 fprintf('Done!\n')
 
 %% Delete unused variables and save all workspace
