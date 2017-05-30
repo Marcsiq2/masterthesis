@@ -12,8 +12,8 @@ import midi_utils
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
 
-INPUT_FOLDER = '../Files/guitar_in/helena_song3/'
-OUTPUT_FILE = '../Files/extracted_midi/helena_song3/output_channel.mid'
+INPUT_FOLDER = '../Files/guitar_in/suite2/'
+OUTPUT_FILE = '../Files/extracted_midi/suite/output2.mid'
 
 def main():
 
@@ -32,7 +32,7 @@ def main():
             print '\nProcessing: %s' % fileName
             pitch_m, onset_b, dur_b, vel, bpm = extractionProcess(folderName, fileName, 80)
             midi_utils.write_midi_notes(MyMIDI, track-1, pitch_m[1:], onset_b[1:], dur_b[1:], vel[1:])
-            #midi_utils.write_midi_notes(MyMIDI, 0, pitch_m, onset_b, dur_b, vel)
+            
         #save midi files
         binfile = open(OUTPUT_FILE, 'wb')
         MyMIDI.writeFile(binfile)
@@ -61,8 +61,7 @@ def extractionProcess(folderName, fileName, bpm):
 
     # initial variables...
 
-    #flag = 1
-    #bpm_all = [['File Name','bpm', 'confidence']]
+
     string = int(fileName[6])
     freqs_guitar = [(320,660), (240,500), (190, 400), (140, 300), (100, 230), (80, 170)]
     minFrequency = 80  # E2 = 82.412Hz guitar lowest E
@@ -86,6 +85,7 @@ def extractionProcess(folderName, fileName, bpm):
         pwr = essentia_extractor_sig.envelope(folderName, fileName, plot_noise_filter)
     else:
         pwr = pitch_confidence
+        pwr = essentia_extractor_sig.envelope(folderName, fileName, plot_noise_filter)
 
     # Estimate bpm
     if bpm_estimation:

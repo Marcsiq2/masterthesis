@@ -4,6 +4,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 import copy
 import music21 as mus
 from midiutil.MidiFile import MIDIFile 
@@ -80,7 +81,10 @@ def f02nmat(folderName, fileName, f0, pwr, bpm, filter_opt, plot_noise_filter, p
         plt.ylabel('Hz')
         plt.title('(d) Pitch profile filtered.', fontsize=12)
         plt.tight_layout()
+        #fig = plt.gcf()
+        #fig.savefig('prova.pdf',format='pdf', dpi=fig.dpi)
         plt.show()
+
 
     # Hz to midi number
     tuning = 440  # standard tuning, usually 440hz but can variate +/- 4hz depending on the tuning of the instrument.
@@ -175,9 +179,9 @@ def f02nmat(folderName, fileName, f0, pwr, bpm, filter_opt, plot_noise_filter, p
         plt.show()
 
     # create score.....
-    if plot_filters:
-        stream1 = nmat2score_sig(pitch_midi, onset_b, dur_b, False)
-        mus.graph.plotStream(stream1)
+    # if plot_filters:
+    #    stream1 = nmat2score_sig(pitch_midi, onset_b, dur_b, False)
+    #    mus.graph.plotStream(stream1)
     print ('...done!')
     return pitch_midi, onset_b, onset_s, dur_b, dur_s, vel
 
