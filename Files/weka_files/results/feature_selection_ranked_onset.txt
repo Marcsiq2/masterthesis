@@ -1,0 +1,54 @@
+=== Attribute Selection on all input data ===
+
+Search Method:
+	Greedy Stepwise (forwards).
+	Start set: no attributes
+
+	Ranking is the order that attributes were added, starting 
+	with no attributes. The merit scores in the left column
+	are the goodness of the subset after the adding the
+	corresponding attribute in the right column to the subset.
+
+Attribute Subset Evaluator (supervised, Class (numeric): 33 onset_dev):
+	Wrapper Subset Evaluator
+	Learning scheme: weka.classifiers.trees.M5P
+	Scheme options: -M 4.0  
+	Subset evaluation: correlation coefficient
+	Number of folds for accuracy estimation: 5
+
+Ranked attributes:
+ 0.619    6 onset_s
+ 0.658   17 n_simult
+ 0.672    8 measure
+ 0.684   13 pre_ionset_s
+ 0.687   10 pre_dur_s
+ 0.693   14 nxt_ionset_s
+ 0.693    9 pre_dur_b
+ 0.693    5 vel
+ 0.693   27 mtr
+ 0.693   26 isChordN
+ 0.693   24 chord_type
+ 0.693   31 tempo
+ 0.693   20 keyFifths
+ 0.688   18 prev_int
+ 0.691   16 pitch_mod
+ 0.688   23 chord_id
+ 0.69    25 note2chord
+ 0.69    32 phrase
+ 0.691   29 nar2
+ 0.69    12 nxt_dur_s
+ 0.689   11 nxt_dur_b
+ 0.688   22 chord
+ 0.684    4 pitch
+ 0.686   19 next_int
+ 0.683   15 onset_b_mod
+ 0.683    3 string
+ 0.68     7 dur_s
+ 0.678   21 note2key
+ 0.676    2 dur_b
+ 0.676   30 nar3
+ 0.671   28 nar1
+ 0.658    1 onset_b
+
+Selected attributes: 6,17,8,13,10,14,9,5,27,26,24,31,20,18,16,23,25,32,29,12,11,22,4,19,15,3,7,21,2,30,28,1 : 32
+

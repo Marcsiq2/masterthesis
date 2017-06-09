@@ -1,0 +1,38 @@
+=== Attribute Selection on all input data ===
+
+Search Method:
+	Best first.
+	Start set: no attributes
+	Search direction: forward
+	Stale search after 5 node expansions
+	Total number of subsets evaluated: 320
+	Merit of best subset found:    0.693
+
+Attribute Subset Evaluator (supervised, Class (numeric): 33 onset_dev):
+	Wrapper Subset Evaluator
+	Learning scheme: weka.classifiers.trees.M5P
+	Scheme options: -M 4.0  
+	Subset evaluation: correlation coefficient
+	Number of folds for accuracy estimation: 5
+
+Selected attributes: 6,8,9,10,13,14,17 : 7
+                     onset_s
+                     measure
+                     pre_dur_b
+                     pre_dur_s
+                     pre_ionset_s
+                     nxt_ionset_s
+                     n_simult
+
+
+------- RESULTS -----------
+
+=== Cross-validation ===
+=== Summary ===
+
+Correlation coefficient                  0.6935
+Mean absolute error                      0.7265
+Root mean squared error                  0.9336
+Relative absolute error                 72.2764 %
+Root relative squared error             72.0946 %
+Total Number of Instances             1414     

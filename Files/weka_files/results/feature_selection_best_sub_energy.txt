@@ -1,0 +1,23 @@
+=== Attribute Selection on all input data ===
+
+Search Method:
+	Greedy Stepwise (forwards).
+	Start set: no attributes
+	Merit of best subset found:    0.417
+
+Attribute Subset Evaluator (supervised, Class (numeric): 33 energy_rat):
+	Wrapper Subset Evaluator
+	Learning scheme: weka.classifiers.trees.M5P
+	Scheme options: -M 4.0  
+	Subset evaluation: correlation coefficient
+	Number of folds for accuracy estimation: 5
+
+Selected attributes: 6,7,9,20,22,24,27,32 : 8
+                     onset_s
+                     dur_s
+                     pre_dur_b
+                     keyFifths
+                     chord
+                     chord_type
+                     mtr
+                     phrase
