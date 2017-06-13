@@ -53,19 +53,24 @@ nmat_per_0of = shift(nmat_per, 'onset', -nmat_per(1,1));
 %nmat_per_0of(:,1)=nmat_per_0of(:,1)*1.04;
 %nmat_per_0of(:,6)=nmat_per_0of(:,6)*1.04;
 
-nmat_per_0of(:,1)=nmat_per_0of(:,1)*0.87;
-nmat_per_0of(:,6)=nmat_per_0of(:,6)*0.87;
+%nmat_per_0of(:,1)=nmat_per_0of(:,1)*0.87;
+%nmat_per_0of(:,6)=nmat_per_0of(:,6)*0.87;
 
 %nmat_per_0of(:,1)=nmat_per_0of(:,1)*0.97;
 %nmat_per_0of(:,6)=nmat_per_0of(:,6)*0.97;
 
 %% all score
-[~, p2s] = dtwSig(nmat_sco,nmat_per_0of, 1, 0.1, 0.5, 0, 0, 'no', 0.3, 0);
+[~, p2s, figu2] = dtwSig(nmat_sco,nmat_per_0of, 1, 0.1, 0.5, 0, 0, 'no', 0.3, 1);
 figu = aligmentPlot(nmat_sco,nmat_per_0of,p2s, 2);
 
 set(figu, 'PaperPosition', [0 0 130 100]); %Position plot at left hand corner with width 5 and height 5.
 set(figu, 'PaperSize', [130 100]); %Set the paper to have width 5 and height 5.
-print(figu,'Files/Figures/Suite2_auto.pdf','-dpdf','-r0')
+print(figu,['Files/Figures/',score_fn(1:end-4),'v2_nostretch_auto.pdf'],'-dpdf','-r0')
+
+set(figu2, 'PaperPosition', [0 0 25 20]); %Position plot at left hand corner with width 5 and height 5.
+set(figu2, 'PaperSize', [25 20]); %Set the paper to have width 5 and height 5.
+print(figu2,['Files/Figures/',score_fn(1:end-4),'v2_nostretch_cost.pdf'],'-dpdf','-r0')
+
 
 % %% First 8 beats
 % 
@@ -109,10 +114,10 @@ fprintf('Done!\n')
 
 %% Save performance actions
 fprintf(['Saving performance actions to file: ', score_fn(1:end-4),'_pas.arff...']);
-atrib=attributes(pactions,pactions);%create atribute list
-arff_write([score_pn(1:end-11),'dataOut/arff_cleaned/', score_fn(1:end-4),'_energy_pas.arff'],pactions,'train',atrib, [score_fn(1:end-4),'_energy_pas']);
+%atrib=attributes(pactions,pactions);%create atribute list
+%arff_write([score_pn(1:end-11),'dataOut/arff_cleaned/', score_fn(1:end-4),'_energy_pas.arff'],pactions,'train',atrib, [score_fn(1:end-4),'_energy_pas']);
 fprintf('Done!\n')
 
 %% Delete unused variables and save all workspace
 clear ans plot atrib octaveOffset
-save([score_pn(1:end-11),'dataOut/nmat/', score_fn(1:end-4),'_workspace.mat']);
+%save([score_pn(1:end-11),'dataOut/nmat/', score_fn(1:end-4),'_workspace.mat']);
