@@ -1,4 +1,3 @@
-inst#,actual,predicted,error
 1,0,0.25,0.25
 2,0.233,0.487,0.254
 3,0.329,0.634,0.305
@@ -323,17 +322,3 @@ inst#,actual,predicted,error
 322,2.378,1.883,-0.496
 323,2.378,2.084,-0.294
 324,2.378,1.649,-0.73
-
-=== Evaluation on training set ===
-
-Time taken to test model on training data: 0.06 seconds
-
-=== Summary ===
-
-Correlation coefficient                  0.8742
-Mean absolute error                      0.3984
-Root mean squared error                  0.5271
-Relative absolute error                 44.423  %
-Root relative squared error             49.5118 %
-Total Number of Instances              324     
-
