@@ -19,19 +19,19 @@ res = [res_pn,res_fn];
 
 M = csvread(res);
 
-if strfind(res_fn,'energy')
-    fprintf('Generating energy ratio changes...\n');
-    nmat_out(:,5) = nmat_out(:,5).*M(:,3);
-    nmat_out(:,5)=max(nmat_out(:,5),0);
-    
-elseif strfind(res_fn,'onset')
-    fprintf('Generating onset deviation changes...\n');
-    timesc=max(nmat_out(:,2))./max(nmat_out(:,7));
-    nmat_out(:,1)=(nmat_out(:,6)+M(:,3)) *timesc;
-    nmat_out(:,1)=max(nmat_out(:,1),0);
-    nmat_out(:,6)=nmat_out(:,6)+M(:,3);
-    nmat_out(:,6)=max(nmat_out(:,6),0);
-end
+% if strfind(res_fn,'energy')
+%     fprintf('Generating energy ratio changes...\n');
+%     nmat_out(:,5) = ceil(nmat_out(:,5).*M(:,3));
+%     nmat_out(:,5)=max(nmat_out(:,5),0);
+%     
+% elseif strfind(res_fn,'onset')
+%     fprintf('Generating onset deviation changes...\n');
+%     timesc=max(nmat_out(:,2))./max(nmat_out(:,7));
+%     nmat_out(:,1)=(nmat_out(:,6)+M(:,3)) *timesc;
+%     nmat_out(:,1)=max(nmat_out(:,1),0);
+%     nmat_out(:,6)=nmat_out(:,6)+M(:,3);
+%     nmat_out(:,6)=max(nmat_out(:,6),0);
+% end
 
 f_name = input('Enter a file name for the results midi file: ', 's');
-writemidi(nmat_out,[path_results,'/',f_name],120,60);  
+writemidi(nmat_out,[path_results,'/',f_name]);  
