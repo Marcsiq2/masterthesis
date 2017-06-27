@@ -11,9 +11,10 @@ import Tkinter, tkFileDialog
 import midi_utils
 import essentia_extractor_sig
 from midiutil.MidiFile import MIDIFile
+from matplotlib.backends.backend_pdf import PdfPages
 
-INPUT_FOLDER = '../Files/guitar_in/suite2/'
-OUTPUT_FILE = '../Files/extracted_midi/suite/output2.mid'
+INPUT_FOLDER = '../Files/guitar_in/Darn_that_dream/'
+OUTPUT_FILE = '../Files/extracted_midi/Darn_that_dream/output2.mid'
 
 def main():
 
@@ -53,8 +54,8 @@ def extractionProcess(folderName, fileName, bpm):
 
     filter_opt = True
     use_pitch_cont_seg = True  # With adaptative and euristic filters by Giraldo and Bantula
-    plot_noise_filter = False
-    plot_filters = False
+    plot_noise_filter = True
+    plot_filters = True
     unvoice_detection = False
     bpm_estimation = False
     guitar_splitted = True
@@ -78,14 +79,15 @@ def extractionProcess(folderName, fileName, bpm):
         f0, pitch_confidence = essentia_extractor_sig.yin(folderName, fileName, minFrequency, maxFrequency)
     else:
     # If poliphonic audio (use Melodia)
-        f0, pitch_confidence = essentia_extractor_sig.melody(folderName, fileName, minFrequency, maxFrequency)
+        f0, pitch_confidence = essentia_extractor_sig.melody(folderName, fileName, minFrequency, maxFrequency, timeContinuity=100)
 
     # Get pwr
     if monophonic: #(based on envelope for monophonic signals, nov 2015)
+        #pwr = pitch_confidence
         pwr = essentia_extractor_sig.envelope(folderName, fileName, plot_noise_filter)
     else:
-        pwr = pitch_confidence
-        pwr = essentia_extractor_sig.envelope(folderName, fileName, plot_noise_filter)
+        #pwr = pitch_confidence
+        pwr = essentia_extractor_sig.envelope(folderName, fileName, pot_noise_filter)
 
     # Estimate bpm
     if bpm_estimation:

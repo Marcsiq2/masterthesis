@@ -38,7 +38,7 @@ sampleRate = 44100
 guessUnvoiced = True
 
 
-def melody(folderName, fileName, minfrequency, maxfrequency, peakDistributionThreshold=0.9, peakFrameThreshold=0.9, pitchContinuity=27.5625 ,timeContinuity=100 ):
+def melody(folderName, fileName, minfrequency, maxfrequency, peakDistributionThreshold=0.9, peakFrameThreshold=0.9, pitchContinuity=27.5625 ,timeContinuity=100.0 ):
 
     print "...performing melody extraction",
 
@@ -48,7 +48,7 @@ def melody(folderName, fileName, minfrequency, maxfrequency, peakDistributionThr
     peakDistributionThreshold=0.9,# (real ∈ [0,2], default = 0.9) :allowed deviation below the peak salience mean over all frames (fraction of the standard deviation)
     peakFrameThreshold=0.9,# (real ∈ [0,1], default = 0.9) :per-frame salience threshold factor (fraction of the highest peak salience in a frame)
     pitchContinuity=27.5625,# (real ∈ [0,∞), default = 27.5625) :pitch continuity cue (maximum allowed pitch change during 1 ms time period) [cents]
-    timeContinuity=100,# (real ∈ (0,∞), default = 100) :time continuity cue (the maximum allowed gap duration for a pitch contour) [ms]hopSize=hopSize)
+    timeContinuity=100.0,# (real ∈ (0,∞), default = 100) :time continuity cue (the maximum allowed gap duration for a pitch contour) [ms]hopSize=hopSize)
 
     # RUNNING A CHAIN OF ALGORITHMS
 

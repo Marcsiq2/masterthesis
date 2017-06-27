@@ -81,8 +81,7 @@ def f02nmat(folderName, fileName, f0, pwr, bpm, filter_opt, plot_noise_filter, p
         plt.ylabel('Hz')
         plt.title('(d) Pitch profile filtered.', fontsize=12)
         plt.tight_layout()
-        #fig = plt.gcf()
-        #fig.savefig('prova.pdf',format='pdf', dpi=fig.dpi)
+        
         plt.show()
 
 
