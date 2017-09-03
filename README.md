@@ -1,2 +1,4 @@
 # masterthesis
-Computational modeling of expressive performance in hexaphonic guitar
+
+### Work in progres:
+Code documentation coming soon...
